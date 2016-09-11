@@ -9,23 +9,24 @@
 
 ;;; 1.  Create a calculator that takes one argument: a list that represents an expression.
 (define (calculate x)
-  (if (number? x)
-    x
-    ((cond  ((eq? (first x) 'ADD)+ )
-            ((eq? (first x) 'SUB) - )
-            ((eq? (first x) 'MUL) * )
-            ((eq? (first x) 'DIV) / )
-            ((eq? (first x) 'GT) > )
-            ((eq? (first x) 'LT) < )
-            ((eq? (first x) 'GE) >= )
-            ((eq? (first x) 'LE) <= )
-            ((eq? (first x) 'EQ) = )
-            ((eq? (first x) 'NEQ) (lambda (x y) (not (eq? x y))) )
-            ((eq? (first x) 'ANND) (lambda (x y) (and x y)) )
-            ((eq? (first x) 'ORR) (lambda (x y) (or x y)) )
-            ((eq? (first x) 'NOTT) (lambda (x y) (not x y)) )
-            ) (calculate (second x)) (calculate (third x)) )
-      )
+  (cond ((number? x) x)
+        ((eq? (first x) 'IPH) (if (calculate (second x)) (calculate (third x)) (calculate (fourth x) )) )
+        (else ((cond  ((eq? (first x) 'ADD)+ )
+                      ((eq? (first x) 'SUB) - )
+                      ((eq? (first x) 'MUL) * )
+                      ((eq? (first x) 'DIV) / )
+                      ((eq? (first x) 'GT) > )
+                      ((eq? (first x) 'LT) < )
+                      ((eq? (first x) 'GE) >= )
+                      ((eq? (first x) 'LE) <= )
+                      ((eq? (first x) 'EQ) = )
+                      ((eq? (first x) 'NEQ) (lambda (x y) (not (eq? x y))) )
+                      ((eq? (first x) 'ANND) (lambda (x y) (and x y)) )
+                      ((eq? (first x) 'ORR) (lambda (x y) (or x y)) )
+                      ((eq? (first x) 'NOTT) (lambda (x y) (not x y)) )
+                      ) (calculate (second x)) (calculate (third x)) )
+              )
+        )
   )
 
 (calculate '(ADD 3 4)) ;; --> 7
@@ -52,7 +53,4 @@
 (calculate '(ANND (GT (ADD 3 4) (MUL 5 6)) (LE (ADD 3 (MUL 4 5)) (SUB 0 (SUB (ADD 3 4) (MUL 5 6))))) )
 
 ;;; 5. Add IPH
-
-#|
 (calculate '(IPH (GT (ADD 3 4) 7) (ADD 1 2) (ADD 1 3))) ;; -> 4
-|#
