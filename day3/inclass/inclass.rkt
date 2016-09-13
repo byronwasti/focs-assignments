@@ -22,6 +22,7 @@
         )
   )
 
+(display '(Tree max depth))
 (display (tree-max-depth '(1 2 3))) (newline)
 (display (tree-max-depth '(1 (2 (3 1))))) (newline)
 (display (tree-max-depth '((3 (4)) (2 (3 1))))) (newline)
