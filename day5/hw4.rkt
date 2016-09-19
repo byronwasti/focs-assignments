@@ -7,16 +7,6 @@
 ;;; [ ] I completed this assignment with assistance from ___
 ;;;     and/or using these external resources: ___
 
-
-;;;;;;;;;;;
-;; 1. assq
-
-;; `assq` is a function that takes a key and an association list.
-;;
-;; It returns the corresponding key/value pair from the list
-;; (*i.e.*, the pair whose key is *eq?* to the one it is given).
-;;
-;; If the key is not found in the list, `assq` returns `#f`.
 (define (assq key asslist)
   (cond ((null? asslist) #f)
         ((eq? key (first (first asslist))) (first asslist))
@@ -24,52 +14,61 @@
         )
   )
 
-;;(display '(assq) )(newline)
-;;(assq 'hello '( ( new 1 ) ( oh 3 ) ( hello 4) ))
-
-;;;;;;;;;;;
-;; 2. lookup-list
-
-;; Add the ability to look up symbols to your evaluator.
-;;
-;; Add the `lookup-list` argument to your hw2 evaluator (or ours, from the solution set).
-;; `(evaluate 'foo lookup-list)` should return whatever `'foo` is associated with in `lookup-list`.
-
-(define (calculate x aslst)
-  (cond ((number? x) x)
-        ((not (not (assq (first x) aslst))) (calculate (assq (first x) aslst) ))
-        ((eq? (first x) 'IPH) (if (calculate (second x) aslst) (calculate (third x) aslst) (calculate (fourth x) aslst) ))
-        ;; Due to the second argument being a list, this has to be a special case
-        ((eq? (first x) 'evaluate) (assq (second x) (third x))) 
-        ((eq? (first x) 'NOTT) (not (second x)))
-        ((eq? (first x) 'DEFINE) (repl (append aslst (list (second x) (calculate (third x) aslst))) ))
-        (else ((cond  ((eq? (first x) 'ADD)+ )
-                      ((eq? (first x) 'SUB) - )
-                      ((eq? (first x) 'MUL) * )
-                      ((eq? (first x) 'DIV) / )
-                      ((eq? (first x) 'GT) > )
-                      ((eq? (first x) 'LT) < )
-                      ((eq? (first x) 'GE) >= )
-                      ((eq? (first x) 'LE) <= )
-                      ((eq? (first x) 'EQ) = )
-                      ((eq? (first x) 'NEQ) (lambda (x y) (not (eq? x y))) )
-                      ((eq? (first x) 'ANND) (lambda (x y) (and x y)) )
-                      ((eq? (first x) 'ORR) (lambda (x y) (or x y)) )
-                      ;;((eq? (first x) 'NOTT) (lambda (x y) (not x y)) )
-                      (else (error "Don't know how to " (first x)))
-                      ) (calculate (second x) aslst) (calculate (third x) aslst) )
-              )
-        )
+(define operator-list
+  (list (list 'ADD +)
+        (list 'SUB -)
+        (list 'MUL *)
+        (list 'DIV /)
+        (list 'GT >)
+        (list 'LT <)
+        (list 'GE >=)
+        (list 'LE <=)
+        (list 'EQ =)
+        (list 'NEQ (lambda (x y) (not (= x y))))
+        (list 'ANND (lambda (x y) (and x y)))
+        (list 'ORR (lambda (x y) (or x y)))
+        (list 'NOTT not))
   )
 
-;;(display '(lookup-list)) (newline)
-;;(calculate '(evaluate foo ( (test 1) (foo 3) )))
+(define (evaluator sentence environment)
+  (cond ((number? sentence) sentence)
+        ;;((not (assq (first sentence) environment)) 
+            ;;(error "Don't know how to " (first sentence) ))
+        ((assq sentence environment)
+            (second (assq sentence environment))
+            )
+        ((eq? (first sentence) 'IPH) 
+            (if (evaluator (second sentence) environment)
+                (evaluator (third sentence) environment)
+                (evaluator (fourth sentence) environment) )
+            )
+        ((eq? (first sentence) 'LAMBDA)
+            ;;(list 'LAMBDA (second sentence) (third sentence) ))
+            (lambda (second sentence) (third sentence))
+            )
+        ((eq? (first sentence) 'DEFINE)
+            ;; This allows new DEFINEs to "overwrite" old ones
+            (repl (cons (list (second sentence) (third sentence)) environment)) 
+            )
+        ((assq (first sentence) operator-list)
+            ((second (assq (first sentence) operator-list)) 
+                (evaluator (second sentence) environment)
+                (evaluator (third sentence) environment))
+            )
+        ((list? (first sentence))
+            (evaluator (first sentence) environment)
+            )
+        (else (error "Don't know how to " (first sentence)))
+    )
+  )
 
-(define (repl aslst)
+(define (repl environment)
+  (display environment)
   (display "> ")
-  (display (calculate (read) aslst))
+  (display (evaluator (read) environment))
   (newline)
-  (repl aslst)
+  (repl environment)
   )
 
+;;(evaluator '(ADD 1 2) empty)
 (repl empty)
