@@ -30,3 +30,7 @@ For contradiction, let us consider a string of length `m` made of characters fro
 Thus, `m1`'s automata can be rewritten as a non-deterministic automata using the alphabet `a0` by substituting the strings consisting of letters from `a0` with the characters of `a1` in the automata. Since all non-deterministic automata can be written as a deterministic automata, `m0` is able to find a solution using the alphabet `a0`.
 
 This leads to a contradiction, as both `m1` and `m0` are able to solve the problem. Thus, `m0` and `m1` are equally as powerful. This means that an automata using a larger alphabet does not lead to a more powerful computational machine.
+
+## Part 6: RegEx
+Match all strings that contain exactly one `1`.
+`/0*10*/`
