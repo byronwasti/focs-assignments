@@ -16,7 +16,9 @@ Transition Table:
 |S4     | S5 | S4 |
 |S5     | S7 | S6 |
 |S6     | S5 | S4 |
-|S7     | S0 | S4 |
+|S7     | S7 | S4 |
+
+`F = { S4, S5, S6, S7 }`
 
 ## Part 3: Larger Alphabet (Why It Doesn't Make A More Powerful Machine)
 Let us compare the power of an automata using an alphabet `a0` of size `2`, the set `{0, 1}`, which we will call `m0` and an automata using an alphabet `a1` of size `n`, where `n > 2`, which we will call `m1`. Both alphabets are of finite length. A machine is considered more *powerful* if it is able to solve a problem that a less powerful machine is not able to. Thus if `m1` is able to find a solution to a particular input string that `m0` is not, `m1` is more powerful than `m0`.
