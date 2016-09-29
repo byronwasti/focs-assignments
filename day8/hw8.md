@@ -20,6 +20,9 @@ a) Strings containing only the symbol a whose length is a power of 2 (*i.e.* len
 
 [The strings `a`, `aa`, `aaaa`, and `aaaaaaaa` are in this language; the string `aaaaa` is not.]
 
+Given finite automaton with _p_ states, choose word _w_ in _L_ that has property |_w_| >= _p_. Have _w_ split up as _xyz_.
+
+Let _y_ be such that automaton has a loop on _y_. Loop _y_ extra number of times. Now |_w_| is no longer a power of 2. Automaton cannot differentiate. Therefore it is not a regular language.
 
 b) All strings with an equal number of occurrences of the substrings `01` and `10`.
 
