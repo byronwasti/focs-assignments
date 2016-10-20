@@ -5,9 +5,9 @@ You may edit your answers into this file, or add a separate file in the same dir
 If you add a separate file, please include the following at the top.
 In either case, add your name and check one of the boxes.
 
-Student Name: Frankly Olin [change to your name]
+Student Name: Byron Wasti [change to your name]
 Check one:
-[ ] I completed this assignment without assistance or external resources.
+[X] I completed this assignment without assistance or external resources.
 [ ] I completed this assignment with assistance from ___
     and/or using these external resources: ___
 
@@ -19,13 +19,13 @@ For each of the following pairs of functions, identify a multiplier and a minimu
 
 
   A. 367n+1098     and     2n                  [n0 = 40; k=200]
-  B. n^2 + 2n + 6    and     6n^2 - 25
-  C. n^3 + n^2 - 2n     and     6n^2 - 25
-  D. 869,438    and    923
-  E. 2^n    and    3^n
-  F. 3^n    and    2^n
-  G. log_2 n     and    log_10 n    [NB:  these are intended to be log-base-2 of n and log-base-10 of n]
-  H. log_10 n^2    and     log_2 n
+  B. n^2 + 2n + 6    and     6n^2 - 25         [n0 = 10; k=0.2]
+  C. n^3 + n^2 - 2n     and     6n^2 - 25      CANNOT: first grows faster than the second
+  D. 869,438    and    923                     [??]
+  E. 2^n    and    3^n                         [n0 = 10; k=0.02]
+  F. 3^n    and    2^n                         CANNOT: first grows faster than the second
+  G. log_2 n     and    log_10 n    [NB:  these are intended to be log-base-2 of n and log-base-10 of n]  [n0 = 20, k=2.5]
+  H. log_10 n^2    and     log_2 n  CANNOT: First grows faster than the second
 
 
 II. Linear data structures
@@ -35,16 +35,38 @@ For the following problem, assume that it costs 1 unit to access a structure -- 
 Assume that you have n elements stored in an array and the same n elements stored in a linked list; you have no other references to these data structures.  You may assume that n > 10.  How much does it cost to perform each of the following actions?
 
   A. Read the value of the first element in the array?  In the list?
+Both take 1 unit
+
   B. Read the value of the seventh element in the array?  In the list?
+Array takes 1 unit, list takes 7 units.
+
   C. Add an element to the array?  [Where is the cheapest place to add it?]  To the list?  [Where is the cheapest place to add it?]
+Array takes n+1 units (if creating a new array), or 1 unit (are we considering realloc costs?).
+List takes n+2 units (n units to get to the end, 1 unit to add an element, 1 to link that element)
+
   D. Delete the fifth element from the array?  From the list?
+Array is n-5 units, because all elements have to be moved over. List is 1 unit which is re-linking the fourth element to the sixth element (and possibly a unit to remove the 5th element from memory entirely)
+
   E. Confirm that a particular element -- say x -- is present in the array?  In the list?
+Array is n (worst case), list is n (worst case).
+
   F. Confirm that a particular element -- say y -- is NOT present in the array?  In the list?
+Array is n (worst case), list is n (worst case).
 
 Now assume that you can maintain one extra piece of storage for the data structure.  In the case of the array, you may want to maintain a length reference.
 In the case of the linked list, what would be similarly helpful?
-G. How much would it cost now to add an element to the end of the array?  To add an element to the end of the list?
-H. How much would it cost now to delete an element from the array?  From the list?  What if it were the final element?  The penultimate element?
+Make it a doubly linked list (is that an option?)
+
+    G. How much would it cost now to add an element to the end of the array?  To add an element to the end of the list?
+
+Array would be 1 because we don't care about realloc costs. List still takes n+1.
+
+    H. How much would it cost now to delete an element from the array?  From the list?  What if it were the final element?  The penultimate element?
+
+Array n-p to delete, where p is the location of the element in the array (because you have to move everything over). List would cost p+2 because you have to find the element and re-link the previous to the next and then delete the element. Final element wouldn't change anything for either situation.
 
 Finally, assume that both the array and the linked list are sorted, i.e., that their elements are in some predictable order (say, comparable by < or <=).
   J. How much would it cost to confirm that a particular element -- say x -- is present in the array?  In the list?  To confirm that a particular element -- say y -- is not present in the array?  In the list?
+
+Array is log(n) to find it is either present or not present. List is still worst-case n to find if an element is present or not present.
+
